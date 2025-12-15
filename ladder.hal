@@ -4,6 +4,25 @@ net machine-is-enabled classicladder.0.in-01
 net spindle-forward spindle.0.forward classicladder.0.in-02
 net spindle-reverse spindle.0.reverse classicladder.0.in-03
 
+
+net tool-change-prepare-button classicladder.0.in-04
+net tool-change-request classicladder.0.in-05
+net tool-change-confirmed classicladder.0.in-06
+
+net gearshift-current-measurement classicladder.0.in-08
+
+net speed-monitoring classicladder.0.in-09
+
+net gearshift-block-1-up classicladder.0.in-10
+net gearshift-block-1-down classicladder.0.in-11
+
+
+net gearshift-block-2-up classicladder.0.in-12
+net gearshift-block-2-down classicladder.0.in-13
+
+net gearshift-block-3-up classicladder.0.in-14
+net gearshift-block-3-down classicladder.0.in-15
+
 net request-spindle-first-range classicladder.0.in-16
 net request-spindle-second-range classicladder.0.in-17
 
@@ -19,33 +38,13 @@ net request-block3-backward classicladder.0.in-24
 net request-block3-middle classicladder.0.in-25
 net request-block3-forward classicladder.0.in-26
 net spindle-direction-switch classicladder.0.in-27
+net spindle-manual-start classicladder.0.in-28
 
-
-
-
-net speed-monitoring classicladder.0.in-09
-
-net gearshift-block-1-up classicladder.0.in-10
-net gearshift-block-1-down classicladder.0.in-11
-
-
-net gearshift-block-2-up classicladder.0.in-12
-net gearshift-block-2-down classicladder.0.in-13
-
-net gearshift-block-3-up classicladder.0.in-14
-net gearshift-block-3-down classicladder.0.in-15
-
-net gearshift-current-measurement classicladder.0.in-08
-
-
-net tool-change-prepare-button classicladder.0.in-04
-net tool-change-request classicladder.0.in-05
-net tool-change-confirmed classicladder.0.in-06
-
-
-
-
+net spindle-enable classicladder.0.out-00
+net spindle-cw classicladder.0.out-01
+net spindle-ccw classicladder.0.out-02
 net spindle-soft-start classicladder.0.out-03
+net spindle-brake classicladder.0.out-04
 net spindle-speed-range-first classicladder.0.out-05
 net spindle-speed-range-second classicladder.0.out-06
 
@@ -59,9 +58,6 @@ net gearshift-block-3-rv classicladder.0.out-12
 net spindle-at-speed classicladder.0.out-13
 net gear-changing classicladder.0.out-14
 net tool-change-preparation classicladder.0.out-15
-net tool-change-prepare-button-done classicladder.0.out-16 hal_manualtoolchange.change_button
-
-net spindle-brake classicladder.0.out-04
-net spindle-ccw classicladder.0.out-02
-net spindle-cw classicladder.0.out-01
-net spindle-enable classicladder.0.out-00
+net tool-change-prepare-button-done classicladder.0.out-16
+net spindle-manual-cw classicladder.0.out-17
+net spindle-manual-ccw classicladder.0.out-18

@@ -1,6 +1,8 @@
 # Include your custom_postgui HAL commands here
 # This file will not be overwritten when you run PNCconf again
 
+
+
 # --- ESTOP CHAIN STARTS ---
 unlinkp iocontrol.0.user-enable-out
 unlinkp iocontrol.0.emc-enable-in
@@ -125,17 +127,45 @@ net gearshift-block-3-fwd hm2_7i92.0.7i84.0.2.output-04
 # --- GEARSHIFT BLOCK III REVERSE ---
 net gearshift-block-3-rv hm2_7i92.0.7i84.0.2.output-05
 
-
+# --- SPINDLE DIRECTION SWITCH ---
 net spindle-direction-switch hm2_7i92.0.7i84.0.2.input-14
 
+# --- SPINDLE MANUAL START BUTTON ---
 net spindle-manual-start hm2_7i92.0.7i84.0.2.input-11
 
+# --- TOOL CHANGE PREPARE BUTTON ---
 net tool-change-prepare-button hm2_7i92.0.7i84.0.2.input-21
 
+# --- RAPID FEED BUTTON ---
 net rapid-feed-button hm2_7i92.0.7i84.0.2.input-08
 
-net coolant-switch hm2_7i92.0.7i84.0.2.input-09
+# --- COOLANT SWITCH ---
+net flood-on halui.flood.on <= hm2_7i92.0.7i84.0.2.input-09
+net flood-of halui.flood.off <= hm2_7i92.0.7i84.0.2.input-09-not
 
+# --- FEED START BUTTON ---
 net feed-start-button hm2_7i92.0.7i84.0.2.input-15
 
-net feed-stop-button hm2_7i92.0.7i84.0.2.input-20
+# --- FEED STOP BUTTON ---
+net abort hm2_7i92.0.7i84.0.2.input-20
+
+net tool-change-prepare-button-done hal_manualtoolchange.change_button
+
+# External Program Pause/Resume Button
+net pause-resume-btn and2.1.in0 and2.2.in0 <= hm2_7i92.0.7i84.0.2.input-13-not
+net pause-on toggle2nist.0.is-on and2.1.in1 <= halui.program.is-paused
+net run-on and2.2.in1 <= halui.program.is-running
+net pause-sig or2.0.in0 <= and2.1.out
+net resume-sig or2.0.in1 <= and2.2.out
+net toggle-ok toggle.0.in <= or2.0.out
+net togglesig toggle2nist.0.in <= toggle.0.out
+net toggleon halui.program.pause <= toggle2nist.0.on
+net toggleoff halui.program.resume <= toggle2nist.0.off
+
+# lube
+net machine-is-on => lube.0.enable
+net lubrication-sensor => lube.0.pressure
+net lube-pump <= lube.0.lube
+net lubevel_x <= joint.0.vel-cmd => lube.0.xvel
+net lubevel_y <= joint.1.vel-cmd => lube.0.yvel
+net lubevel_z <= joint.2.vel-cmd => lube.0.zvel

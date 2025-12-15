@@ -9,8 +9,7 @@ loadrt hostmot2
 loadrt hm2_eth board_ip="10.10.10.10" config="num_encoders=6 num_pwmgens=0 num_stepgens=0 sserial_port_0=000xxxxx" 
 setp    hm2_7i92.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.z,pid.s
-loadrt estop_latch count=2
-loadrt and2
+
 loadrt classicladder_rt numPhysInputs=70 numPhysOutputs=50 numBits=50 numTimersIec=11
 
 addf hm2_7i92.0.read          servo-thread
@@ -20,10 +19,7 @@ addf pid.x.do-pid-calcs       servo-thread
 addf pid.y.do-pid-calcs       servo-thread
 addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
-addf estop-latch.0  servo-thread
-addf estop-latch.1  servo-thread
-addf classicladder.0.refresh servo-thread
-addf and2.0  servo-thread
+addf classicladder.0.refresh  servo-thread
 addf hm2_7i92.0.write         servo-thread
 
 # external output signals

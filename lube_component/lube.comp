@@ -10,10 +10,13 @@ pin in unsigned ypath = 40000 "Y travel";
 pin in unsigned zpath = 40000 "Z travel";
 pin out bit lube "Pump on signal";
 pin in bit pressure "Lube pressure signal";
+pin out float pathx "X travel";
+pin out float pathx "Y travel";
+pin out float pathx "Z travel";
 
-variable float pathx = 0;
-variable float pathy = 0;
-variable float pathz = 0;
+variable float pathx_internal = 0;
+variable float pathy_internal = 0;
+variable float pathz_internal = 0;
 variable int mstart = 0; // 1=run on machine-is-enabled (linuxcnc start).
 variable int pump_on = 0;	
 
@@ -42,16 +45,20 @@ FUNCTION(_) {
 	//if ( !enable ) mstart = 1;
 
 	// axis path integrators
-	if ( xvel >= 0.0 ) pathx = pathx + xvel * fperiod;
-	else pathx = pathx - xvel * fperiod;
-	if ( yvel >= 0.0 ) pathy = pathy + yvel * fperiod;
-	else pathy = pathy - yvel * fperiod;
-	if ( zvel >= 0.0 ) pathz = pathz + zvel * fperiod;
-	else pathz = pathz - zvel * fperiod;
+	if ( xvel >= 0.0 ) pathx_internal = pathx_internal + xvel * fperiod;
+	else pathx_internal = pathx_internal - xvel * fperiod;
+	if ( yvel >= 0.0 ) pathy_internal = pathy_internal + yvel * fperiod;
+	else pathy_internal = pathy_internal - yvel * fperiod;
+	if ( zvel >= 0.0 ) pathz_internal = pathz_internal + zvel * fperiod;
+	else pathz_internal = pathz_internal - zvel * fperiod;
 
 	// run pump
-	if ( pathx >= xpath || pathy >=ypath || pathz >=zpath ) { 
-		pathx = pathy = pathz = 0.0;
+	if ( pathx_internal >= xpath || pathy_internal >=ypath || pathz_internal >=zpath ) {
+		pathx_internal = pathy_internal = pathz_internal = 0.0;
 		pump_on = 1;
 	}
+
+	pathx = pathx_internal;
+	pathy = pathy_internal;
+	pathz = pathz_internal;
 }
