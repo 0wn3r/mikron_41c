@@ -1,0 +1,21 @@
+
+Step 1: Install the component
+
+$ sudo halcompile --install lube.comp
+
+
+Step 2: Add below to your hal file
+
+### LUBRIFICATION
+loadrt lube
+addf lube.0 servo-thread
+
+setp parport.0.pin-04-out-invert 1 #output pin to pump relay (parport in this example)
+
+net machine-is-enabled lube.0.mrun
+setp lube.0.xpath 3000	#(mm, travel distance)
+setp lube.0.zpath 3000	#(mm, travel distance)
+setp lube.0.lubetime 3	#(seconds, pump ON)
+net lubevel_x <= joint.0.vel-cmd => lube.0.xvel
+net lubevel_z <= joint.1.vel-cmd => lube.0.zvel
+net lube-sig <= lube.0.out => parport.0.pin-04-out

@@ -1,0 +1,53 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 833x475+18+331
+placeFrames 0.3
+set ::ratio 0.3
+set ::old_w_leftf 160
+set ::watchlist {
+    sig+lube-pump
+    sig+feed-contactor-ready
+    sig+lubrication-sensor
+    sig+spindle-brake
+    sig+spindle-ccw
+    sig+spindle-cw
+    sig+spindle-enable
+    sig+spindle-soft-start
+    sig+spindle-speed-range-first
+    sig+spindle-speed-range-second
+    sig+speed-monitoring
+    sig+gearshift-block-1-down
+    sig+gearshift-block-1-fwd
+    sig+gearshift-block-1-rv
+    sig+gearshift-block-1-up
+    sig+gearshift-block-2-down
+    sig+gearshift-block-2-fwd
+    sig+gearshift-block-2-rv
+    sig+gearshift-block-2-up
+    sig+gearshift-block-3-down
+    sig+gearshift-block-3-fwd
+    sig+gearshift-block-3-rv
+    sig+gearshift-block-3-up
+    sig+gearshift-current-measurement
+    sig+request-spindle-first-range
+    sig+request-spindle-second-range
+    sig+request-block1-backward
+    sig+request-block1-forward
+    sig+request-block1-middle
+    sig+request-block2-backward
+    sig+request-block2-forward
+    sig+request-block2-middle
+    sig+request-block3-backward
+    sig+request-block3-forward
+    sig+request-block3-middle
+    sig+gear-changing
+    sig+tool-change-prepare-button
+    sig+rapid-feed-button
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 0
+set ::autoSaveWatchlist 1

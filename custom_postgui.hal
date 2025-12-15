@@ -1,0 +1,141 @@
+# Include your custom_postgui HAL commands here
+# This file will not be overwritten when you run PNCconf again
+
+# --- ESTOP CHAIN STARTS ---
+unlinkp iocontrol.0.user-enable-out
+unlinkp iocontrol.0.emc-enable-in
+
+net latch-reset iocontrol.0.user-request-enable 
+net latch0-ok-in iocontrol.0.user-enable-out 
+
+net latch0-ok-in => estop-latch.0.ok-in
+net latch0-out <= estop-latch.0.ok-out 
+net latch0-out => estop-latch.1.ok-in
+
+
+net latch-reset => estop-latch.0.reset
+net latch-reset => estop-latch.1.reset
+net latch-out iocontrol.0.emc-enable-in <= estop-latch.1.ok-out
+setp hm2_7i92.0.7i77.0.0.output-14-invert true
+net estop-out estop-latch.1.fault-out => hm2_7i92.0.7i77.0.0.output-14
+
+# --- EXTERNAL ESTOP SWITCH ---
+net button-estop <= hm2_7i92.0.7i77.0.0.input-00-not
+net button-estop => estop-latch.0.fault-in
+
+# --- HARD AXIS ESTOP ---
+net axis-estop <= hm2_7i92.0.7i77.0.0.input-01-not
+net axis-estop => estop-latch.1.fault-in
+
+# --- ESTOP CHAIN ENDS ---
+
+# --- LUBRICATION SENSOR ---
+net lubrication-sensor <= hm2_7i92.0.7i77.0.0.input-02
+
+# --- HYDRAULIC MONITORING ---
+net hydraulic-monitoring motion.err-hydraulic-monitoring <= hm2_7i92.0.7i77.0.0.input-03
+
+# --- SAFETYY DOOR MONITORING K161 ---
+net safety-door-monitoring motion.err-safety-door-monitoring <= hm2_7i92.0.7i77.0.0.input-04
+
+# --- TEMPERATURE MONITORING ---
+net temperature-monitoring motion.err-temperature-monitoring <= hm2_7i92.0.7i77.0.0.input-05-not
+
+# --- SPEED MONITORING ---
+net speed-monitoring <= hm2_7i92.0.7i77.0.0.input-06
+
+# --- GEARSHIFT BLOCK I UP ---
+net gearshift-block-1-up <= hm2_7i92.0.7i77.0.0.input-07
+
+
+# --- GEARSHIFT BLOCK I DOWN ---
+net gearshift-block-1-down <= hm2_7i92.0.7i77.0.0.input-08
+
+
+# --- GEARSHIFT BLOCK II UP ---
+net gearshift-block-2-up <= hm2_7i92.0.7i77.0.0.input-09
+
+
+# --- GEARSHIFT BLOCK II DOWN ---
+net gearshift-block-2-down <= hm2_7i92.0.7i77.0.0.input-10
+
+
+# --- GEARSHIFT BLOCK III UP ---
+net gearshift-block-3-up <= hm2_7i92.0.7i77.0.0.input-11
+
+
+# --- GEARSHIFT BLOCK III DOWN ---
+net gearshift-block-3-down <= hm2_7i92.0.7i77.0.0.input-12
+
+# --- GEARSHIFT CURRENT MEASUREMENT ---
+net gearshift-current-measurement <= hm2_7i92.0.7i77.0.0.input-13
+
+# --- FEED DRIVE CURRENT LIMIT I2XT ---
+net feed-drive-current-limit motion.err-feed-drive-current-limit <= hm2_7i92.0.7i77.0.0.input-14
+
+# --- SERVO READY ---
+net servo-ready <= hm2_7i92.0.7i77.0.0.input-15
+net servo-ready => and2.0.in0
+
+# --- FEED CONTACTOR READY ---
+net feed-contactor-ready <= hm2_7i92.0.7i77.0.0.input-24
+net feed-contactor-ready => and2.0.in1
+
+net motion-ready and2.0.out => motion.enable
+
+
+# --- LUBE PUMP ---
+net lube-pump => hm2_7i92.0.7i77.0.0.output-01
+
+# --- SPINDLE SOFT START ---
+net spindle-soft-start => hm2_7i92.0.7i77.0.0.output-02
+
+# --- FIRST SPINDLE SPEED RANGE ---
+net spindle-speed-range-first => hm2_7i92.0.7i77.0.0.output-04
+
+# --- SECOND SPINDLE SPEED RANGE ---
+net spindle-speed-range-second => hm2_7i92.0.7i77.0.0.output-05
+
+# --- TOOL CHANGE PRAPARATION ---
+net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09
+
+# --- 3RD AXIS BRAKE ---
+net machine-is-enabled => hm2_7i92.0.7i77.0.0.output-10 
+
+# --- FEED DRIVE CONTACTOR ---
+setp hm2_7i92.0.7i77.0.0.output-12-invert true
+net estop-out => hm2_7i92.0.7i77.0.0.output-12
+
+
+# --- GEARSHIFT BLOCK I FORWARD ---
+net gearshift-block-1-fwd hm2_7i92.0.7i84.0.2.output-00
+
+# --- GEARSHIFT BLOCK I REVERSE ---
+net gearshift-block-1-rv hm2_7i92.0.7i84.0.2.output-01
+
+# --- GEARSHIFT BLOCK II FORWARD ---
+net gearshift-block-2-fwd hm2_7i92.0.7i84.0.2.output-02
+
+# --- GEARSHIFT BLOCK II REVERSE ---
+net gearshift-block-2-rv hm2_7i92.0.7i84.0.2.output-03
+
+# --- GEARSHIFT BLOCK III FORWARD ---
+net gearshift-block-3-fwd hm2_7i92.0.7i84.0.2.output-04
+
+# --- GEARSHIFT BLOCK III REVERSE ---
+net gearshift-block-3-rv hm2_7i92.0.7i84.0.2.output-05
+
+
+net spindle-direction-switch hm2_7i92.0.7i84.0.2.input-14
+
+net spindle-manual-start hm2_7i92.0.7i84.0.2.input-11
+
+net tool-change-prepare-button hm2_7i92.0.7i84.0.2.input-21
+
+net rapid-feed-button hm2_7i92.0.7i84.0.2.input-08
+
+net coolant-switch hm2_7i92.0.7i84.0.2.input-09
+
+net feed-start-button hm2_7i92.0.7i84.0.2.input-15
+
+net feed-stop-button hm2_7i92.0.7i84.0.2.input-20

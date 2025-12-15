@@ -1,0 +1,22 @@
+loadrt mikron_gearbox
+addf mikron-gearbox servo-thread
+
+net request-spindle-first-range mikron-gearbox.motor-slow
+net request-spindle-second-range mikron-gearbox.motor-fast
+
+net request-block1-backward mikron-gearbox.block-one-backward
+net request-block1-middle mikron-gearbox.block-one-middle
+net request-block1-forward mikron-gearbox.block-one-forward
+
+net request-block2-backward mikron-gearbox.block-two-backward
+net request-block2-middle mikron-gearbox.block-two-middle
+net request-block2-forward mikron-gearbox.block-two-forward
+
+net request-block3-backward mikron-gearbox.block-three-backward
+net request-block3-middle mikron-gearbox.block-three-middle
+net request-block3-forward mikron-gearbox.block-three-forward
+
+net gear-changing mikron-gearbox.changing
+
+net spindle-speed-in-abs spindle.0.speed-out-abs mikron-gearbox.spindle-speed-in-abs
+net spindle-speed-out spindle.0.speed-in mikron-gearbox.spindle-speed-out
