@@ -9,6 +9,8 @@ net tool-change-prepare-button classicladder.0.in-04
 net tool-change-request classicladder.0.in-05
 net tool-change-confirmed classicladder.0.in-06
 
+net spindle-on spindle.0.on classicladder.0.in-07
+
 net gearshift-current-measurement classicladder.0.in-08
 
 net speed-monitoring classicladder.0.in-09
@@ -55,7 +57,7 @@ net gearshift-block-2-fwd classicladder.0.out-09
 net gearshift-block-2-rv classicladder.0.out-10
 net gearshift-block-3-fwd classicladder.0.out-11
 net gearshift-block-3-rv classicladder.0.out-12
-net spindle-at-speed classicladder.0.out-13
+net spindle-at-speed spindle.0.at-speed classicladder.0.out-13
 net gear-changing classicladder.0.out-14
 net tool-change-preparation classicladder.0.out-15
 net tool-change-prepare-button-done classicladder.0.out-16

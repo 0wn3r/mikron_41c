@@ -302,5 +302,3 @@ net tool-number            =>  hal_manualtoolchange.number
 
 #  ---ignore tool prepare requests---
 net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
-
-net spindle-at-speed spindle.0.at-speed
