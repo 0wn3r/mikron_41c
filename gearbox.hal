@@ -17,6 +17,7 @@ net request-block3-middle mikron-gearbox.block-three-middle
 net request-block3-forward mikron-gearbox.block-three-forward
 
 net gear-changing mikron-gearbox.changing
+net spindle-on mikron-gearbox.spindle-on spindle.0.on
 
 net spindle-speed-in-abs spindle.0.speed-out-abs mikron-gearbox.spindle-speed-in-abs
 net spindle-speed-out spindle.0.speed-in mikron-gearbox.spindle-speed-out
