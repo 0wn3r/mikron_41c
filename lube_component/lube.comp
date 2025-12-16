@@ -11,8 +11,8 @@ pin in unsigned zpath = 40000 "Z travel";
 pin out bit lube "Pump on signal";
 pin in bit pressure "Lube pressure signal";
 pin out float pathx "X travel";
-pin out float pathx "Y travel";
-pin out float pathx "Z travel";
+pin out float pathy "Y travel";
+pin out float pathz "Z travel";
 
 variable float pathx_internal = 0;
 variable float pathy_internal = 0;
