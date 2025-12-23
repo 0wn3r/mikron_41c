@@ -63,3 +63,5 @@ net tool-change-preparation classicladder.0.out-15
 net tool-change-prepare-button-done classicladder.0.out-16
 net spindle-manual-cw classicladder.0.out-17
 net spindle-manual-ccw classicladder.0.out-18
+net spindle-manual-ccw classicladder.0.out-18
+net spindle-not-at-speed classicladder.0.out-19 motion.feed-inhibit
