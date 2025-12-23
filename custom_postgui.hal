@@ -43,6 +43,9 @@ net safety-door-monitoring motion.err-safety-door-monitoring <= hm2_7i92.0.7i77.
 # --- TEMPERATURE MONITORING ---
 net temperature-monitoring motion.err-temperature-monitoring <= hm2_7i92.0.7i77.0.0.input-05-not
 
+# --- GEARBOX TIMEOUT ---
+net gearbox-timeout motion.err-gearbox-timeout
+
 # --- SPEED MONITORING ---
 net speed-monitoring <= hm2_7i92.0.7i77.0.0.input-06
 
