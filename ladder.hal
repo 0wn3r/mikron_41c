@@ -1,4 +1,4 @@
-loadusr classicladder mikron.clp
+loadusr classicladder --nogui  mikron.clp
 
 net machine-is-enabled classicladder.0.in-01
 net spindle-forward spindle.0.forward classicladder.0.in-02

@@ -8,12 +8,49 @@
 net tool-change-request    => gmoccapy.toolchange-change
 net tool-change-confirmed  <= gmoccapy.toolchange-changed
 net tool-number            => gmoccapy.toolchange-number
+net tool-change-prepare-button-done gmoccapy.toolchange-confirm
 
 #  ---signals to show tool offset in the GUI---
 
-net tooloffset-x  => gmoccapy.tooloffset-x
-net tooloffset-z  => gmoccapy.tooloffset-z
+net tooloffset-x gmoccapy.tooloffset-x <= motion.tooloffset.x
+net tooloffset-z gmoccapy.tooloffset-z <= motion.tooloffset.z
 
 #  ---spindle-at-speed indicator---
 
 net spindle-at-speed => gmoccapy.spindle_at_speed_led
+net spindle-speed-out => gmoccapy.spindle_feedback_bar
+
+# --- JOG-X-POS ---
+net jog-x-pos  gmoccapy.jog.axis.jog-x-plus
+
+# --- JOG-X-NEG ---
+net jog-x-neg  gmoccapy.jog.axis.jog-x-minus
+
+# --- JOG-Y-POS ---
+net jog-y-pos  gmoccapy.jog.axis.jog-y-plus
+
+# --- JOG-Y-NEG ---
+net jog-y-neg  gmoccapy.jog.axis.jog-y-minus
+
+# --- JOG-Z-POS ---
+net jog-z-pos  gmoccapy.jog.axis.jog-z-plus
+
+# --- JOG-Z-NEG ---
+net jog-z-neg  gmoccapy.jog.axis.jog-z-minus
+
+net rapid-feed-button gmoccapy.jog.turtle-jog
+
+# --- HYDRAULIC MONITORING ---
+net hydraulic-monitoring gmoccapy.messages.hydraulic-monitoring
+
+# --- SAFETYY DOOR MONITORING K161 ---
+net safety-door-monitoring gmoccapy.messages.safety-door-monitoring
+
+# --- TEMPERATURE MONITORING ---
+net temperature-monitoring gmoccapy.messages.temperature-monitoring
+
+# --- GEARBOX TIMEOUT ---
+net gearbox-timeout gmoccapy.messages.gearbox-timeout
+
+# --- FEED DRIVE CURRENT LIMIT I2XT ---
+net feed-drive-current-limit gmoccapy.messages.feed-drive-current-limit

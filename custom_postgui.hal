@@ -105,7 +105,7 @@ net spindle-speed-range-second => hm2_7i92.0.7i77.0.0.output-05
 net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09
 
 # --- 3RD AXIS BRAKE ---
-net machine-is-enabled => hm2_7i92.0.7i77.0.0.output-10 
+net machine-is-enabled => hm2_7i92.0.7i77.0.0.output-10
 
 # --- FEED DRIVE CONTACTOR ---
 setp hm2_7i92.0.7i77.0.0.output-12-invert true
@@ -143,16 +143,21 @@ net tool-change-prepare-button hm2_7i92.0.7i84.0.2.input-21
 net rapid-feed-button hm2_7i92.0.7i84.0.2.input-08
 
 # --- COOLANT SWITCH ---
-net flood-on halui.flood.on <= hm2_7i92.0.7i84.0.2.input-09
-net flood-of halui.flood.off <= hm2_7i92.0.7i84.0.2.input-09-not
+setp edge.0.both false
+setp edge.0.in-edge true
+setp edge.0.out-width-ns 100000000
+net flood-on halui.flood.on edge.0.in <= hm2_7i92.0.7i84.0.2.input-09
+net flood-off halui.flood.off <= edge.0.out
+
+#net flood-off-edge edge.0.in <= hm2_7i92.0.7i84.0.2.input-09
 
 # --- FEED START BUTTON ---
-net feed-start-button hm2_7i92.0.7i84.0.2.input-15
+net feed-start-button halui.machine.on hm2_7i92.0.7i84.0.2.input-15
 
 # --- FEED STOP BUTTON ---
 net abort hm2_7i92.0.7i84.0.2.input-20
 
-net tool-change-prepare-button-done hal_manualtoolchange.change_button
+#net tool-change-prepare-button-done hal_manualtoolchange.change_button
 
 # External Program Pause/Resume Button
 net pause-resume-btn and2.1.in0 and2.2.in0 <= hm2_7i92.0.7i84.0.2.input-13-not
@@ -172,3 +177,5 @@ net lube-pump <= lube.0.lube
 net lubevel_x <= joint.0.vel-cmd => lube.0.xvel
 net lubevel_y <= joint.1.vel-cmd => lube.0.yvel
 net lubevel_z <= joint.2.vel-cmd => lube.0.zvel
+
+

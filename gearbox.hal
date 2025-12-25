@@ -22,4 +22,5 @@ net machine-is-on mikron-gearbox.machine-ready
 net gearbox-timeout mikron-gearbox.estop-out
 
 net spindle-speed-in-abs spindle.0.speed-out-abs mikron-gearbox.spindle-speed-in-abs
-net spindle-speed-out spindle.0.speed-in mikron-gearbox.spindle-speed-out
+net spindle-speed-out-rps spindle.0.speed-in mikron-gearbox.spindle-speed-out-rps
+net spindle-speed-out mikron-gearbox.spindle-speed-out
