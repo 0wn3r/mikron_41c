@@ -102,7 +102,7 @@ net spindle-speed-range-first => hm2_7i92.0.7i77.0.0.output-04
 net spindle-speed-range-second => hm2_7i92.0.7i77.0.0.output-05
 
 # --- TOOL CHANGE PRAPARATION ---
-net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09
+net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09 motion.jog-inhibit motion.homing-inhibit
 
 # --- 3RD AXIS BRAKE ---
 net machine-is-enabled => hm2_7i92.0.7i77.0.0.output-10
@@ -110,6 +110,9 @@ net machine-is-enabled => hm2_7i92.0.7i77.0.0.output-10
 # --- FEED DRIVE CONTACTOR ---
 setp hm2_7i92.0.7i77.0.0.output-12-invert true
 net estop-out => hm2_7i92.0.7i77.0.0.output-12
+
+# --- DOOR LOCK ---
+net door-lock => hm2_7i92.0.7i77.0.0.output-13
 
 
 # --- GEARSHIFT BLOCK I FORWARD ---
@@ -157,6 +160,18 @@ net feed-start-button halui.machine.on hm2_7i92.0.7i84.0.2.input-15
 # --- FEED STOP BUTTON ---
 net abort hm2_7i92.0.7i84.0.2.input-20
 
+# --- PANEL KEY (ESTOP RESET) BUTTON ---
+net estop-reset hm2_7i92.0.7i84.0.2.input-22 halui.estop.reset
+
+# --- DOOR OVERRIDE BUTTON ---
+net door-override-button hm2_7i92.0.7i84.0.2.input-23
+
+# --- JOG SPEED PLUS BUTTON ---
+net jog-speed-plus hm2_7i92.0.7i84.0.2.input-24
+
+# --- JOG SPEED MINUS BUTTON ---
+net jog-speed-minus hm2_7i92.0.7i84.0.2.input-25
+
 #net tool-change-prepare-button-done hal_manualtoolchange.change_button
 
 # External Program Pause/Resume Button
@@ -178,4 +193,6 @@ net lubevel_x <= joint.0.vel-cmd => lube.0.xvel
 net lubevel_y <= joint.1.vel-cmd => lube.0.yvel
 net lubevel_z <= joint.2.vel-cmd => lube.0.zvel
 
-
+net jog-incr-0 <= hm2_7i92.0.7i84.0.2.input-26
+net jog-incr-1 <= hm2_7i92.0.7i84.0.2.input-27
+net jog-incr-2 <= hm2_7i92.0.7i84.0.2.input-28

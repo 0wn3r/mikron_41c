@@ -40,6 +40,10 @@ net jog-z-neg  gmoccapy.jog.axis.jog-z-minus
 
 net rapid-feed-button gmoccapy.jog.turtle-jog
 
+net jog-speed-plus gmoccapy.spc_lin_jog_vel.increase
+
+net jog-speed-minus gmoccapy.spc_lin_jog_vel.decrease
+
 # --- HYDRAULIC MONITORING ---
 net hydraulic-monitoring gmoccapy.messages.hydraulic-monitoring
 

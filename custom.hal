@@ -6,7 +6,7 @@ loadrt toggle count=1
 loadrt toggle2nist count=1
 loadrt or2 count=1
 loadrt lube
-loadrt edge count=1
+loadrt edge count=4
 
 addf toggle.0 servo-thread
 addf toggle2nist.0 servo-thread
@@ -18,3 +18,6 @@ addf and2.2  servo-thread
 addf or2.0  servo-thread
 addf lube.0 servo-thread
 addf edge.0 servo-thread
+addf edge.1 servo-thread
+addf edge.2 servo-thread
+addf edge.3 servo-thread
