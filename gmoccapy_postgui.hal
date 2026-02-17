@@ -40,6 +40,14 @@ net jog-z-neg  gmoccapy.jog.axis.jog-z-minus
 
 net rapid-feed-button gmoccapy.jog.turtle-jog
 
+net jog-incr-0 gmoccapy.jog.jog-inc-0 demux.0.out-00
+net jog-incr-1 gmoccapy.jog.jog-inc-1 demux.0.out-01
+net jog-incr-2 gmoccapy.jog.jog-inc-2 demux.0.out-02
+net jog-incr-3 gmoccapy.jog.jog-inc-3 demux.0.out-03
+net jog-incr-4 gmoccapy.jog.jog-inc-4 demux.0.out-04
+net jog-incr-5 gmoccapy.jog.jog-inc-5 demux.0.out-05
+net jog-incr-6 gmoccapy.jog.jog-inc-6 demux.0.out-06
+
 net jog-speed-plus gmoccapy.spc_lin_jog_vel.increase
 
 net jog-speed-minus gmoccapy.spc_lin_jog_vel.decrease
@@ -58,3 +66,4 @@ net gearbox-timeout gmoccapy.messages.gearbox-timeout
 
 # --- FEED DRIVE CURRENT LIMIT I2XT ---
 net feed-drive-current-limit gmoccapy.messages.feed-drive-current-limit
+
