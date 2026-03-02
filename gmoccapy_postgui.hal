@@ -67,3 +67,9 @@ net gearbox-timeout gmoccapy.messages.gearbox-timeout
 # --- FEED DRIVE CURRENT LIMIT I2XT ---
 net feed-drive-current-limit gmoccapy.messages.feed-drive-current-limit
 
+setp gmoccapy.feed.feed-override.count-enable 1
+setp gmoccapy.spindle.spindle-override.count-enable 1
+setp gmoccapy.rapid.rapid-override.count-enable 1
+net feed-enc-counts   	 hm2_7i92.0.7i77.0.0.enc0.count gmoccapy.feed.feed-override.counts
+net spindle-enc-counts	 hm2_7i92.0.7i77.0.0.enc1.count gmoccapy.spindle.spindle-override.counts
+net rapid-enc-counts 	 hm2_7i92.0.7i84.0.2.enc0.count gmoccapy.rapid.rapid-override.counts

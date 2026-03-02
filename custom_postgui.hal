@@ -102,8 +102,8 @@ net spindle-speed-range-first => hm2_7i92.0.7i77.0.0.output-04
 net spindle-speed-range-second => hm2_7i92.0.7i77.0.0.output-05
 
 # --- TOOL CHANGE PRAPARATION ---
-net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09 motion.jog-inhibit motion.homing-inhibit
-
+net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09
+#  motion.jog-inhibit motion.homing-inhibit
 # --- 3RD AXIS BRAKE ---
 net machine-is-enabled => hm2_7i92.0.7i77.0.0.output-10
 
@@ -158,7 +158,7 @@ net flood-off halui.flood.off <= edge.0.out
 net feed-start-button halui.machine.on hm2_7i92.0.7i84.0.2.input-15
 
 # --- FEED STOP BUTTON ---
-net abort hm2_7i92.0.7i84.0.2.input-20
+net abort hm2_7i92.0.7i84.0.2.input-20-not halui.abort
 
 # --- PANEL KEY (ESTOP RESET) BUTTON ---
 net estop-reset hm2_7i92.0.7i84.0.2.input-22 halui.estop.reset

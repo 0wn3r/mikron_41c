@@ -6,7 +6,7 @@
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS  names_misc_errors=[EMCMOT]MISC_ERRORS
 loadrt hostmot2
-loadrt hm2_eth board_ip="10.10.10.10" config="num_encoders=6 num_pwmgens=0 num_stepgens=0 sserial_port_0=000xxxxx" 
+loadrt hm2_eth board_ip="10.10.10.10" config="num_encoders=6 num_pwmgens=0 num_stepgens=0 sserial_port_0=302xxxxx"
 setp    hm2_7i92.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.z,pid.s
 
