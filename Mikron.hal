@@ -37,8 +37,8 @@ net spindle-ccw  =>     hm2_7i92.0.7i77.0.0.output-06
 # --- SPINDLE-CW ---
 net spindle-cw  =>     hm2_7i92.0.7i77.0.0.output-07
 
-# --- SPINDLE-BRAKE ---
-net spindle-brake  =>     hm2_7i92.0.7i77.0.0.output-08
+# --- SPINDLE-BRAKE ---  (unused with VFD, DC brake not in the motor circuit)
+#net spindle-brake  =>     hm2_7i92.0.7i77.0.0.output-08
 
 # external input signals
 
@@ -233,6 +233,18 @@ net z-pos-rawcounts        <=  hm2_7i92.0.encoder.02.rawcounts
 net home-z     =>  joint.2.home-sw-in
 net z-neg-limit     =>  joint.2.neg-lim-sw-in
 net z-pos-limit     =>  joint.2.pos-lim-sw-in
+
+#*******************
+#  SPINDLE VFD
+#*******************
+
+# AOUT5 -> VFD AI1, 0..10 V = 0..60 Hz (VFD max frequency 60 Hz)
+setp   hm2_7i92.0.7i77.0.1.analogout5-scalemax  60
+setp   hm2_7i92.0.7i77.0.1.analogout5-minlim    0
+setp   hm2_7i92.0.7i77.0.1.analogout5-maxlim    60
+
+net spindle-vfd-freq   => hm2_7i92.0.7i77.0.1.analogout5
+net spindle-enable     => hm2_7i92.0.7i77.0.1.spinena
 
 
 #******************************

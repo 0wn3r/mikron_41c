@@ -92,9 +92,6 @@ net motion-ready and2.0.out => motion.enable
 # --- LUBE PUMP ---
 net lube-pump => hm2_7i92.0.7i77.0.0.output-01
 
-# --- SPINDLE SOFT START ---
-net spindle-soft-start => hm2_7i92.0.7i77.0.0.output-02
-
 # --- FIRST SPINDLE SPEED RANGE ---
 net spindle-speed-range-first => hm2_7i92.0.7i77.0.0.output-04
 
@@ -102,15 +99,9 @@ net spindle-speed-range-first => hm2_7i92.0.7i77.0.0.output-04
 net spindle-speed-range-second => hm2_7i92.0.7i77.0.0.output-05
 
 # --- SPINDLE VFD ---
-# AOUT5 -> VFD AI1, 0..10 V = 0..60 Hz (VFD max frequency 60 Hz)
-setp hm2_7i92.0.7i77.0.1.analogout5-scalemax 60
-setp hm2_7i92.0.7i77.0.1.analogout5-minlim 0
-setp hm2_7i92.0.7i77.0.1.analogout5-maxlim 60
-net spindle-vfd-freq => hm2_7i92.0.7i77.0.1.analogout5
-net machine-is-on => hm2_7i92.0.7i77.0.1.spinena
 # VFD relay "frequency reached" and DO "fault"
-net vfd-at-freq <= hm2_7i92.0.7i77.0.0.input-25
-net vfd-fault   <= hm2_7i92.0.7i77.0.0.input-26 => spindle.0.amp-fault-in
+net vfd-at-freq <= hm2_7i92.0.7i77.0.0.input-26
+net vfd-fault   <= hm2_7i92.0.7i77.0.0.input-25 => spindle.0.amp-fault-in
 
 # --- TOOL CHANGE PRAPARATION ---
 net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09
