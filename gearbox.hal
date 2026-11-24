@@ -27,12 +27,15 @@ net spindle-speed-out mikron-gearbox.spindle-speed-out
 
 # VFD (stepless speed inside each gear, 40..4800 rpm)
 net spindle-twitch mikron-gearbox.twitch
-net vfd-at-freq mikron-gearbox.vfd-at-speed
+net spindle-cw mikron-gearbox.run-forward
+net spindle-ccw mikron-gearbox.run-reverse
 net spindle-at-freq mikron-gearbox.at-speed
 net spindle-vfd-freq mikron-gearbox.vfd-freq
 
 # VFD maximum frequency
 setp mikron-gearbox.max-freq 60
-# setp mikron-gearbox.at-speed-delay 0.2
+# at-speed ramp model: max-freq / VFD acceleration and deceleration time (3 s)
+setp mikron-gearbox.accel-rate 20
+setp mikron-gearbox.decel-rate 20
 # setp mikron-gearbox.hold-freq 45
 # setp mikron-gearbox.twitch-freq 10

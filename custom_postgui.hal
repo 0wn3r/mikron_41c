@@ -99,9 +99,8 @@ net spindle-speed-range-first => hm2_7i92.0.7i77.0.0.output-04
 net spindle-speed-range-second => hm2_7i92.0.7i77.0.0.output-05
 
 # --- SPINDLE VFD ---
-# VFD relay "frequency reached" and DO "fault"
-net vfd-at-freq <= hm2_7i92.0.7i77.0.0.input-26
-net vfd-fault   <= hm2_7i92.0.7i77.0.0.input-25 => spindle.0.amp-fault-in
+# VFD relay "fault" (DO damaged, not used; at-speed from the ramp model in mikron-gearbox)
+net vfd-fault   <= hm2_7i92.0.7i77.0.0.input-26 => spindle.0.amp-fault-in
 
 # --- TOOL CHANGE PRAPARATION ---
 net tool-change-preparation => hm2_7i92.0.7i77.0.0.output-09
