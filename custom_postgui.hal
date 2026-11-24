@@ -203,6 +203,15 @@ net lube-pump <= lube.0.lube
 net lubevel_x <= joint.0.vel-cmd => lube.0.xvel
 net lubevel_y <= joint.1.vel-cmd => lube.0.yvel
 net lubevel_z <= joint.2.vel-cmd => lube.0.zvel
+# lube supervision (PLC ERROR 30): warning = no pressure, fault = no good cycle within fault-delay
+net lube-warning <= lube.0.warning
+net lube-fault motion.err-lube-fault <= lube.0.fault
+# defaults match the original PLC machine parameters:
+# setp lube.0.interval 450            (MP102, s, 0 = off)
+# setp lube.0.pressure-timeout 45     (MP108)
+# setp lube.0.post-pressure-time 15   (MP109)
+# setp lube.0.fault-delay 900         (MP99)
+# setp lube.0.xpath 39322             (MP159, mm; also ypath, zpath)
 
 net jog-incr-sel-0 demux.0.sel-bit-00 <= hm2_7i92.0.7i84.0.2.input-26
 net jog-incr-sel-1 demux.0.sel-bit-01 <= hm2_7i92.0.7i84.0.2.input-27

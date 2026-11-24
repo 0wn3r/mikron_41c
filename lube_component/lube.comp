@@ -1,64 +1,156 @@
+component lube "Central lubrication for the Mikron WF41C, following the original TNC 155 PLC";
 
-component lube "Lube and velocity";
+description """
+Drives the central lubrication pump (A1, K431) and supervises the pressure switch (E4)
+the same way the original Heidenhain PLC macro did:
 
-pin in float xvel "X velocity";
-pin in float yvel "Y velocity";
-pin in float zvel "Z velocity";
-pin in bit enable "net machine-is-enabled";
-pin in unsigned xpath = 40000 "X travel";
-pin in unsigned ypath = 40000 "Y travel";
-pin in unsigned zpath = 40000 "Z travel";
-pin out bit lube "Pump on signal";
-pin in bit pressure "Lube pressure signal";
-pin out float pathx "X travel";
-pin out float pathy "Y travel";
-pin out float pathz "Z travel";
+* a cycle when any axis has travelled *xpath*/*ypath*/*zpath* mm (PLC MP159-161 = 600 x 65.536 mm = 39.3 m)
+* a cycle every *interval* seconds of machine-on time since the last cycle (PLC Z8/Z9, MP102 = 450 s); 0 disables it
+* a cycle on a rising edge of *request* (PLC M55)
 
-variable float pathx_internal = 0;
-variable float pathy_internal = 0;
-variable float pathz_internal = 0;
-variable int mstart = 0; // 1=run on machine-is-enabled (linuxcnc start).
-variable int pump_on = 0;	
+A cycle runs the pump until the pressure switch closes, then keeps it running for
+*post-pressure-time* seconds (PLC Z15, MP109 = 15 s). If pressure is not reached within
+*pressure-timeout* seconds (PLC Z14, MP108 = 45 s) the pump stops and *warning* is set
+(PLC ERROR 30). If no successful cycle follows within *fault-delay* seconds (PLC Z5,
+MP99 = 900 s), *fault* is set; connect it to a misc error to stop the machine like the PLC did.
+A successful cycle or a rising edge on *reset* clears both.
 
-author "Desti";
+The pump only runs while *enable* is TRUE; a cycle interrupted by enable going FALSE is
+repeated when the machine is switched on again.
+""";
+
+pin in bit enable "Machine on; the pump only runs while TRUE";
+pin in bit pressure "Lube pressure switch (E4), TRUE = pressure reached";
+pin in bit request "Rising edge requests an extra lube cycle (like M55)";
+pin in bit reset "Rising edge clears warning and fault";
+
+pin in float xvel "X velocity (joint.0.vel-cmd)";
+pin in float yvel "Y velocity (joint.1.vel-cmd)";
+pin in float zvel "Z velocity (joint.2.vel-cmd)";
+pin in float xpath = 39322 "X travel between lube cycles, mm";
+pin in float ypath = 39322 "Y travel between lube cycles, mm";
+pin in float zpath = 39322 "Z travel between lube cycles, mm";
+
+pin out bit lube "Pump on";
+pin out bit warning "Pressure not reached within pressure-timeout (PLC ERROR 30)";
+pin out bit fault "No successful cycle within fault-delay after a warning";
+pin out float pathx "X travel since last cycle, mm";
+pin out float pathy "Y travel since last cycle, mm";
+pin out float pathz "Z travel since last cycle, mm";
+pin out float time_since_lube "Machine-on seconds since last cycle";
+pin out s32 state "0 = idle, 2 = pumping, 3 = pressure reached";
+
+param rw float interval = 450 "Seconds of machine-on time between cycles, 0 = off";
+param rw float pressure_timeout = 45 "Seconds the pump may run without reaching pressure";
+param rw float post_pressure_time = 15 "Seconds the pump keeps running after pressure is reached";
+param rw float fault_delay = 900 "Seconds after a warning before fault is set";
+
+variable double px = 0;
+variable double py = 0;
+variable double pz = 0;
+variable double t_since = 0;
+variable double t_run = 0;
+variable double t_hold = 0;
+variable double t_fault = -1;
+variable int st = 0;
+variable int pending = 0;
+variable int last_request = 0;
+variable int last_reset = 0;
+variable int last_pressure = 0;
+
+author "Eduard Kachur (based on lube.comp by Desti)";
 license "GPL";
 function _;
 ;;
+
+#include <rtapi_math.h>
+
+#define ST_IDLE    0
+#define ST_PUMP    2
+#define ST_HOLD    3
+
 FUNCTION(_) {
+    double dt = fperiod;
+    int req_edge = request && !last_request;
+    int rst_edge = reset && !last_reset;
+    int pr_edge = pressure && !last_pressure;
+    last_request = request;
+    last_reset = reset;
+    last_pressure = pressure;
 
-	// pump timer
-	if (pump_on) {
-	
-		lube = 1;
-		
-		if (pressure) { 
-			lube = 0; 
-			pump_on = 0; 
-		}
-	}
-	
-	// machine start/restart lube shot
-	if ( enable && mstart ) { 
-		pump_on = 1; 
-		mstart = 0; 
-	}
-	//if ( !enable ) mstart = 1;
+    if (rst_edge) {
+        warning = 0;
+        fault = 0;
+        t_fault = -1;
+    }
 
-	// axis path integrators
-	if ( xvel >= 0.0 ) pathx_internal = pathx_internal + xvel * fperiod;
-	else pathx_internal = pathx_internal - xvel * fperiod;
-	if ( yvel >= 0.0 ) pathy_internal = pathy_internal + yvel * fperiod;
-	else pathy_internal = pathy_internal - yvel * fperiod;
-	if ( zvel >= 0.0 ) pathz_internal = pathz_internal + zvel * fperiod;
-	else pathz_internal = pathz_internal - zvel * fperiod;
+    /* travel since the last cycle (counted even while the machine is off) */
+    px += fabs(xvel) * dt;
+    py += fabs(yvel) * dt;
+    pz += fabs(zvel) * dt;
 
-	// run pump
-	if ( pathx_internal >= xpath || pathy_internal >=ypath || pathz_internal >=zpath ) {
-		pathx_internal = pathy_internal = pathz_internal = 0.0;
-		pump_on = 1;
-	}
+    /* fault delay after a failed cycle (PLC Z5) */
+    if (t_fault >= 0) {
+        t_fault += dt;
+        if (t_fault >= fault_delay) fault = 1;
+    }
 
-	pathx = pathx_internal;
-	pathy = pathy_internal;
-	pathz = pathz_internal;
+    /* collect requests; they are kept until a cycle can run */
+    if (req_edge) pending = 1;
+    if (px >= xpath || py >= ypath || pz >= zpath) pending = 1;
+
+    if (!enable) {
+        /* pump off; an interrupted cycle is repeated later */
+        if (st == ST_PUMP || st == ST_HOLD) {
+            pending = 1;
+            st = ST_IDLE;
+        }
+        lube = 0;
+    } else {
+        switch (st) {
+        case ST_IDLE:
+            t_since += dt;
+            if (interval > 0 && t_since >= interval) pending = 1;
+            if (pending) {
+                pending = 0;
+                t_run = 0;
+                st = ST_PUMP;
+            }
+            break;
+        case ST_PUMP:               /* wait for pressure (PLC Z14) */
+            t_run += dt;
+            if (pr_edge) {
+                t_hold = 0;
+                st = ST_HOLD;
+            } else if (t_run >= pressure_timeout) {
+                /* no pressure: stop, warn, start fault delay */
+                warning = 1;
+                if (t_fault < 0) t_fault = 0;
+                st = ST_IDLE;
+            }
+            break;
+        case ST_HOLD:               /* keep pumping after pressure (PLC Z15) */
+            t_hold += dt;
+            if (t_hold >= post_pressure_time) {
+                warning = 0;
+                fault = 0;
+                t_fault = -1;
+                st = ST_IDLE;
+            }
+            break;
+        }
+        lube = (st == ST_PUMP || st == ST_HOLD);
+        if (lube) {
+            /* travel and requests during a cycle are covered by it (PLC resets the NC distances while A1 runs) */
+            px = py = pz = 0;
+            t_since = 0;
+            pending = 0;
+        }
+    }
+
+    pathx = px;
+    pathy = py;
+    pathz = pz;
+    time_since_lube = t_since;
+    state = st;
 }

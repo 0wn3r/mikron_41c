@@ -66,6 +66,8 @@ net gearbox-timeout gmoccapy.messages.gearbox-timeout
 
 # --- FEED DRIVE CURRENT LIMIT I2XT ---
 net feed-drive-current-limit gmoccapy.messages.feed-drive-current-limit
+net lube-warning gmoccapy.messages.lube-warning
+net lube-fault gmoccapy.messages.lube-fault
 
 setp gmoccapy.feed.feed-override.count-enable 1
 setp gmoccapy.spindle.spindle-override.count-enable 1
